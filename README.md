@@ -11,6 +11,7 @@ First you need to clone the repository with the command:
 
 Then you need to run it using
 > cd Pokedex/Pokedex
+
 > dotnet run Pokedex
 
 After that a promt will ask to introduce the id or name of the pokemon
