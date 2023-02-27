@@ -2,13 +2,29 @@
 using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Pokedex;
+using Pokedex.HttpClient;
 using Pokedex.Models;
+using Pokedex.Repositories;
+using static System.Net.Mime.MediaTypeNames;
 
-var client =new HttpClient();
-var result=client.GetAsync("https://pokeapi.co/api/v2/type/poison/");
-var stringResult =await result.Result.Content.ReadAsStringAsync();
-var jsonSerializer = JsonSerializer.Deserialize<TypeInfo>(stringResult);
+var services = new ServiceCollection();
+ConfigureServices(services);
+await services
+    .AddSingleton<Startup>()
+    .BuildServiceProvider()
+    .GetRequiredService<Startup>()
+    .Start();
 
-
-Console.WriteLine(stringResult);
-Console.ReadKey();
+void ConfigureServices(IServiceCollection services)
+{
+    services
+            .AddSingleton<IPokedexService, PokedexService>()
+            .AddSingleton<IPokedexRepository, PokedexRepository>()
+            .AddSingleton<IAPICaller, APICaller>()
+            .AddSingleton<IHttpClientWraper, HttpClientWraper>()
+            .AddHttpClient()
+            ;
+        
+}

@@ -27,7 +27,7 @@ namespace Pokedex.HttpClient
         {
 
             var client = _httpClientFactory.CreateClient();
-            var result = await client.GetAsync("https://pokeapi.co/api/v2/type/poison/");
+            var result = await client.GetAsync(url);
             if (result.IsSuccessStatusCode)
             {
                 return await result.Content.ReadAsStringAsync();               
